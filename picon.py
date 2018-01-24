@@ -13,7 +13,7 @@ def screen():
 		logfile(pnd)#we also create a log of the console as well as print to screen
 		print(pnd)
 
-def control(x):
+def control(x):#switch for future use to modify script operation
 	FromArd()#need to test both Fromard and tfromard if both work change to tfromard
 	if log == True:
 		log(test)#note test is untill return fromArd is improved to tell use what log we are
