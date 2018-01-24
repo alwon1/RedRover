@@ -14,7 +14,7 @@ def screen():
 		print(pnd)
 
 def control(x):
-	FromArd()
+	FromArd()#need to test both Fromard and tfromard if both work change to tfromard
 	if log == True:
 		log(test)#note test is untill return fromArd is improved to tell use what log we are
            #writing
