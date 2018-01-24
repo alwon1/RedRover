@@ -9,7 +9,7 @@ String n;
 void setup() 
 {
 	Serial.begin(9600);
-	setTime(12, 0, 0, 1, 1, 11);
+	setTime(12, 0, 0, 1, 1, 18);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -23,7 +23,15 @@ void echo()
 	if (Serial.available())
 	{
 		n = Serial.read();
+		String t = String(minute()+":" + second());
 		Serial.println(n + minute() + ":" + second());
+		log("testlog time:" + t);
 	}
 
+}
+void log(String log)
+{
+	Serial.println("--log--");
+	Serial.println(log);
+	Serial.println("--endlog--");
 }
