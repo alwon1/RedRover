@@ -3,6 +3,7 @@
  Created:	1/23/2018 8:52:45 PM
  Author:	Allyn
 */
+#include <Time.h>
 #include <TimeLib.h>
 String n;
 // the setup function runs once when you press reset or power the board

@@ -1,7 +1,7 @@
 import serial#imports commands for using serial ports
 import re
 print("initilizing connection")
-arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
+arduinoSerialData = serial.Serial('/dev/ttyUSB0',230400)
 log = False
 def ToArd(toard):#writes out the varibles value to the adrino
 	arduinoSerialData.write(toard)
@@ -10,20 +10,24 @@ def ToArd(toard):#writes out the varibles value to the adrino
 def screen():
 	while(arduinoSerialData.inWaiting() > 0):#reads data to console from adrino
 		pnd = (arduinoSerialData.readline())
-		logfile(pnd)#we also create a log of the console as well as print to screen
+		logfile(pnd.decode('ASCII'))#we also create a log of the console as well as print to screen
 		print(pnd)
 
-def control(x):#switch for future use to modify script operation
-	FromArd()#need to test both Fromard and tfromard if both work change to tfromard
+def control():#switch for future use to modify script operation
+	if (arduinoSerialData.inWaiting()>0):
+		FromArd()#need to test both Fromard and tfromard if both work change to tfromard
 	if log == True:
-		log(test)#note test is untill return fromArd is improved to tell use what log we are
-           #writing
-	ToArd()
+		log(test)#note test is untill return fromArd is improved to tell use what log we are#writing
+	else:
+		screen()
+	#ToArd()
+	while arduinoSerialData.inWaiting()==0 and not input():
+		pass
 	control()
 
 def log(name):
 	log = open(name,'a')#before calling check in waiting also use regexp to pick between print and log
-	log.write('\n' + arduinoSerialData.readline())
+	log.write(('\n' + arduinoSerialData.readline()).decode('ASCII'))
 
 def FromArd():
 	if bool(re.search(r"?:--Log--",str(arduinoSerialData.readline()))):# search for the string --log-- to indicate the start of a log
