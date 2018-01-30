@@ -2,8 +2,27 @@
 import serial#imports commands for using serial ports
 import re
 import time
+import serial.tools.list_ports
+s= serial.Serial
 print("initilizing connection")
-arduinoSerialData = serial.Serial('COM6',9600)#'/dev/ttyUSB0',9600)
+arduino_ports = [
+	p.device
+	for p in serial.tools.list_ports.comports()
+	if 'Arduino'  in p.description
+]
+if not arduino_ports:
+	raise IOError("No Arduino found")
+elif len(arduino_ports)==1:
+	arduinoSerialData = serial.Serial(arduino_ports[0],9600)
+
+elif len(arduino_ports) > 1:
+	for p in arduino_ports:
+		print(p)
+	print("select which device to connect to")
+	arduinoSerialData = serial.Serial(arduino_ports[int(input())-1],9600)
+
+print("Connected")
+#arduinoSerialData = serial.Serial #= serial.Serial('COM6',9600)#'/dev/ttyUSB0',9600)
 x = 1
 u = False
 def ToArd(toard):#writes out the varibles value to the adrino
@@ -25,7 +44,7 @@ def writeControl(rec,con):#conrols wether statment is writeen to screen or to lo
 			log('test',con)
 		else:
 			screen(con)
-	
+
 def control():#switch for future use to modify script operation
 	while x == 1:
 		while arduinoSerialData.inWaiting() > 0:
@@ -33,10 +52,10 @@ def control():#switch for future use to modify script operation
 			writeControl(FromArd(recived),recived)
 
 		if arduinoSerialData.inWaiting() == 0:
-			da = input()
+			ToArdSt = input()
 			if da:
 				y = False
-				ToArd(da)
+				ToArd(ToArdSt)
 				time.sleep(0.1)
 
 
