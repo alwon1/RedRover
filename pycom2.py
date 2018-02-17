@@ -8,7 +8,7 @@ print("initilizing connection")
 arduino_ports = [
 	p.device
 	for p in serial.tools.list_ports.comports()
-	if 'Arduino'  in p.description
+	if 'USB Serial Port'  in p.description
 ]
 if not arduino_ports:
 	raise IOError("No Arduino found")
@@ -22,7 +22,6 @@ elif len(arduino_ports) > 1:
 	arduinoSerialData = serial.Serial(arduino_ports[int(input())-1],9600)
 
 print("Connected")
-#arduinoSerialData = serial.Serial #= serial.Serial('COM6',9600)#'/dev/ttyUSB0',9600)
 x = 1
 u = False
 def ToArd(toard):#writes out the varibles value to the adrino
@@ -51,12 +50,12 @@ def control():#switch for future use to modify script operation
 			recived = arduinoSerialData.readline().decode()
 			writeControl(FromArd(recived),recived)
 
-		if arduinoSerialData.inWaiting() == 0:
-			ToArdSt = input()
-			if da:
-				y = False
-				ToArd(ToArdSt)
-				time.sleep(0.1)
+		#if arduinoSerialData.inWaiting() == 0:
+			#ToArdSt = input()
+			#if da:
+				#y = False
+				#ToArd(ToArdSt)
+				#time.sleep(0.1)
 
 
 def log(name,toWrite):
