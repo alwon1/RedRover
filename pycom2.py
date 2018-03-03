@@ -8,7 +8,7 @@ print("initilizing connection")
 arduino_ports = [
 	p.device
 	for p in serial.tools.list_ports.comports()
-	if 'USB Serial Port'  in p.description
+	if 'Arduino'  in p.description
 ]
 if not arduino_ports:
 	raise IOError("No Arduino found")

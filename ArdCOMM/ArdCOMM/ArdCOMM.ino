@@ -15,6 +15,31 @@ void setup()
 {
 	Serial.begin(9600);
 	setTime(12, 0, 0, 1, 1, 18);
+	Serial.println("enter hour");
+	SerialWait();
+	int h = Serial.readString().toInt();
+	
+	Serial.println("enter min");
+	SerialWait();
+	int min = Serial.readString().toInt();
+
+	Serial.println("enter sec");
+	SerialWait();
+	int sec = Serial.readString().toInt();
+
+	Serial.println("enter day");
+	SerialWait();
+	int day = Serial.readString().toInt();
+
+	Serial.println("enter month");
+	SerialWait();
+	int month = Serial.readString().toInt();
+
+	Serial.println("enter year");
+	SerialWait();
+	int y = Serial.readString().toInt();
+	setTime(h, min, sec, day, month, y);
+	Serial.println(TimeStringx());
 }
 void move(int speed, float ratio, bool direction)//ratio is left vs right
 {
@@ -47,9 +72,75 @@ void drive(int left, int right)
 // the loop function runs over and over again until power down or reset
 void loop()
 {
-	echo();
+	test();
+		
+	
 }
+void SerialWait() {
+	while (!Serial.available()) {
+		delayMicroseconds(1);
+	}
+}
+void SComOut(int comType,String message, int logNum=-1)// is ethier to screen or off
+{
+	
+	switch (comType)
+	{
 
+	case 0:// log
+		switch (logNum)//log identifyer
+		{
+			Serial.println("-Log-");
+		case 0://test log
+			Serial.println("-test-" + message);
+			break;
+		default://default log
+			Serial.println(message);
+			break;
+		}
+		Serial.println(message);
+		break;
+	case 1://screen
+		Serial.println("-s-\n");
+		Serial.println(message+TimeStringx());
+		Serial.print("\n");
+		break;
+	default:
+		Serial.println("-VIP-\nWarning invalid log file location");
+		break;
+	}
+}
+static String TimeStringx()
+{
+	String tempTime;// = dayShortStr(day());
+	int x = day();
+	tempTime += x;
+	
+	
+}
+static String SComIn()
+{
+	//if (Serial.available())
+	//{
+
+		char CurrentLetter;
+		String tempString="";
+		
+			do
+			{
+				if (Serial.available())
+				{
+					CurrentLetter = Serial.read();
+					
+					tempString.concat(CurrentLetter);
+					//Serial.println(tempString);
+				}
+			} while (CurrentLetter != '\n');
+			return tempString;
+			
+		
+	//}
+}
 void echo()
 {
 	if (Serial.available())
@@ -87,4 +178,29 @@ void log(String logo)
 	Serial.println("--log--");
 	Serial.println(logo);
 	Serial.println("--endlog--");
+}
+void test()
+{
+	delay(100);
+	Serial.print(dayStr(day()));
+	Serial.print(" ");
+	Serial.print(monthStr(month()));
+	Serial.print(day());
+	Serial.print(" ");
+	Serial.print(year());
+	Serial.print(" ");
+
+	//Serial.println("xp");//TimeString());
+	delay(100);
+	/*while (Serial.available())
+	{
+		String x
+		 = SComIn();
+		Serial.println(x);
+		SComOut(1, "testx123");
+	*///}
+}
+void serialEvent()
+{
+	Serial.println(TimeStringx());
 }
